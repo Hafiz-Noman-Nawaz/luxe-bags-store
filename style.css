@@ -712,6 +712,32 @@ body:hover .cursor {
   color: var(--text-muted);
 }
 
+/* ===== SHOW MORE BUTTON ===== */
+.show-more-wrap {
+  display: flex;
+  justify-content: center;
+  margin-top: 2.5rem;
+}
+.btn-show-more {
+  background: transparent;
+  border: 1.5px solid var(--cognac);
+  color: var(--cognac);
+  font-family: "DM Sans", sans-serif;
+  font-size: 0.88rem;
+  letter-spacing: 0.06em;
+  padding: 0.7rem 2.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+.btn-show-more:hover {
+  background: var(--espresso);
+  color: var(--champagne);
+  border-color: var(--espresso);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(30, 18, 9, 0.2);
+}
+
 /* ===== SECTIONS ===== */
 .section {
   padding: 6rem 3rem;

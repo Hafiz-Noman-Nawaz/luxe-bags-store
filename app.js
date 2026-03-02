@@ -344,18 +344,19 @@ function renderProduct(product) {
 
 // ===== MOUNT PRODUCTS =====
 function mountProducts() {
-  const featuredGrid = document.getElementById("featuredGrid");
-  const trendingGrid = document.getElementById("trendingGrid");
-  if (featuredGrid)
-    featuredGrid.innerHTML = FEATURED_PRODUCTS.map(renderProduct).join("");
-  if (trendingGrid)
-    trendingGrid.innerHTML = TRENDING_PRODUCTS.map(renderProduct).join("");
+  // Initial render is handled by refreshAll() which respects pagination
+  refreshAll();
 }
 
 // ===== CATEGORY FILTERS =====
 let activeFeaturedCategory = "All";
 let activeTrendingCategory = "All";
 let currentSearchQuery = "";
+
+// ===== PAGINATION STATE =====
+const PRODUCTS_PER_PAGE = 4;
+let featuredVisibleCount = PRODUCTS_PER_PAGE;
+let trendingVisibleCount = PRODUCTS_PER_PAGE;
 
 function getCategories(products) {
   const cats = [...new Set(products.map((p) => p.category))];
@@ -388,16 +389,32 @@ function filterProducts(products, category, searchQuery) {
   });
 }
 
-function updateGrid(gridId, noResultsId, products, category, searchQuery) {
+function updateGrid(
+  gridId,
+  noResultsId,
+  showMoreId,
+  products,
+  category,
+  searchQuery,
+  visibleCount,
+) {
   const grid = document.getElementById(gridId);
   const noResults = document.getElementById(noResultsId);
-  if (!grid) return;
+  const showMoreWrap = document.getElementById(showMoreId);
+  if (!grid) return { total: 0, shown: 0 };
 
   const filtered = filterProducts(products, category, searchQuery);
-  grid.innerHTML = filtered.map(renderProduct).join("");
+  const toShow = filtered.slice(0, visibleCount);
+  grid.innerHTML = toShow.map(renderProduct).join("");
 
   if (noResults) {
     noResults.style.display = filtered.length === 0 ? "block" : "none";
+  }
+
+  // Show/hide the "Show More" button
+  if (showMoreWrap) {
+    showMoreWrap.style.display =
+      visibleCount < filtered.length ? "flex" : "none";
   }
 
   // Re-init scroll reveal for new cards
@@ -414,30 +431,34 @@ function updateGrid(gridId, noResultsId, products, category, searchQuery) {
   );
   grid.querySelectorAll(".sr").forEach((el) => observer.observe(el));
 
-  return filtered.length;
+  return { total: filtered.length, shown: toShow.length };
 }
 
 function refreshAll() {
-  const featuredCount = updateGrid(
+  const featuredResult = updateGrid(
     "featuredGrid",
     "featuredNoResults",
+    "featuredShowMore",
     FEATURED_PRODUCTS,
     activeFeaturedCategory,
     currentSearchQuery,
+    featuredVisibleCount,
   );
-  const trendingCount = updateGrid(
+  const trendingResult = updateGrid(
     "trendingGrid",
     "trendingNoResults",
+    "trendingShowMore",
     TRENDING_PRODUCTS,
     activeTrendingCategory,
     currentSearchQuery,
+    trendingVisibleCount,
   );
 
   // Update search results info
   const info = document.getElementById("searchResultsInfo");
   if (info) {
     if (currentSearchQuery) {
-      const total = featuredCount + trendingCount;
+      const total = featuredResult.total + trendingResult.total;
       info.textContent = `${total} result${total !== 1 ? "s" : ""} found for "${currentSearchQuery}"`;
     } else {
       info.textContent = "";
@@ -451,6 +472,7 @@ function initFilters() {
 
   function onFeaturedClick(cat) {
     activeFeaturedCategory = cat;
+    featuredVisibleCount = PRODUCTS_PER_PAGE; // reset pagination on category change
     renderFilterButtons(
       "featuredFilters",
       featuredCategories,
@@ -462,6 +484,7 @@ function initFilters() {
 
   function onTrendingClick(cat) {
     activeTrendingCategory = cat;
+    trendingVisibleCount = PRODUCTS_PER_PAGE; // reset pagination on category change
     renderFilterButtons(
       "trendingFilters",
       trendingCategories,
@@ -493,6 +516,9 @@ function initSearch() {
 
   searchInput.addEventListener("input", () => {
     currentSearchQuery = searchInput.value.trim().toLowerCase();
+    // Reset pagination when search changes
+    featuredVisibleCount = PRODUCTS_PER_PAGE;
+    trendingVisibleCount = PRODUCTS_PER_PAGE;
     if (searchClear) {
       searchClear.classList.toggle("visible", searchInput.value.length > 0);
     }
@@ -503,9 +529,31 @@ function initSearch() {
     searchClear.addEventListener("click", () => {
       searchInput.value = "";
       currentSearchQuery = "";
+      featuredVisibleCount = PRODUCTS_PER_PAGE;
+      trendingVisibleCount = PRODUCTS_PER_PAGE;
       searchClear.classList.remove("visible");
       refreshAll();
       searchInput.focus();
+    });
+  }
+}
+
+// ===== SHOW MORE BUTTONS =====
+function initShowMore() {
+  const featuredBtn = document.getElementById("featuredShowMoreBtn");
+  const trendingBtn = document.getElementById("trendingShowMoreBtn");
+
+  if (featuredBtn) {
+    featuredBtn.addEventListener("click", () => {
+      featuredVisibleCount += PRODUCTS_PER_PAGE;
+      refreshAll();
+    });
+  }
+
+  if (trendingBtn) {
+    trendingBtn.addEventListener("click", () => {
+      trendingVisibleCount += PRODUCTS_PER_PAGE;
+      refreshAll();
     });
   }
 }
@@ -595,6 +643,7 @@ document.addEventListener("DOMContentLoaded", () => {
   mountProducts();
   initFilters();
   initSearch();
+  initShowMore();
   initCursor();
   initNav();
   // Scroll reveal runs after products are mounted
