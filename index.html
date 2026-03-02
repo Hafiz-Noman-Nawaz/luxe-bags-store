@@ -166,6 +166,42 @@
       </div>
     </div>
 
+    <!-- Search Bar -->
+    <section class="search-section">
+      <div class="search-wrapper">
+        <div class="search-bar">
+          <svg
+            class="search-icon"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="11" cy="11" r="8" />
+            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+          </svg>
+          <input
+            type="text"
+            id="searchInput"
+            placeholder="Search bags by name, category, or description…"
+            autocomplete="off"
+          />
+          <button
+            class="search-clear"
+            id="searchClear"
+            aria-label="Clear search"
+          >
+            &times;
+          </button>
+        </div>
+        <p class="search-results-info" id="searchResultsInfo"></p>
+      </div>
+    </section>
+
     <!-- Featured Section -->
     <section class="section" id="featured">
       <div class="section-header">
@@ -176,8 +212,14 @@
           on Amazon.
         </p>
       </div>
+      <div class="category-filters" id="featuredFilters">
+        <!-- Category buttons injected by JS -->
+      </div>
       <div class="products-grid" id="featuredGrid">
         <!-- Products injected by JS -->
+      </div>
+      <div class="no-results" id="featuredNoResults" style="display: none">
+        <p>No bags found in this category.</p>
       </div>
     </section>
 
@@ -240,8 +282,14 @@
         <h2 class="section-title">Trending <em>Styles</em></h2>
         <p class="section-sub">What fashion lovers are buying this season.</p>
       </div>
+      <div class="category-filters" id="trendingFilters">
+        <!-- Category buttons injected by JS -->
+      </div>
       <div class="products-grid" id="trendingGrid">
         <!-- Products injected by JS -->
+      </div>
+      <div class="no-results" id="trendingNoResults" style="display: none">
+        <p>No bags found in this category.</p>
       </div>
     </section>
 
