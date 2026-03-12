@@ -1,7 +1,6 @@
 // ===== LUXÉBAG — APP.JS =====
 
 // ===== PRODUCT DATABASE =====
-// To add a product: copy one object, fill in the fields, add Amazon affiliate link
 const FEATURED_PRODUCTS = [
   {
     id: 1,
@@ -144,8 +143,7 @@ const TRENDING_PRODUCTS = [
     name: `Michael Kors Double Zip Wristlet`,
     category: "Wristlet",
     image: "images/trending_products/wristlet1.jpg",
-    description: `
-Michael Kors Women's Jet Set Double Zip Wristlet`,
+    description: `Michael Kors Women's Jet Set Double Zip Wristlet`,
     price: "$129.50",
     rating: "4.7",
     reviews: "2.6k",
@@ -297,13 +295,40 @@ function getCategoryStyle(category) {
   return map[category] || "tote";
 }
 
+// ===== PERSONALIZATION =====
+const PERSONAL_MESSAGES = [
+  "This would look amazing on you, {name}! ✨",
+  "Definitely made for {name} 💫",
+  "{name}, this one's calling your name!",
+  "Perfect pick for {name}'s collection",
+  "{name} would absolutely slay with this 💖",
+  "We think {name} needs this in their life ✨",
+  "Imagine {name} rocking this look 🔥",
+  "This was practically made for {name}!",
+];
+
+function getUserName() {
+  return localStorage.getItem("luxebag_username") || "";
+}
+
+function getPersonalMessage(name) {
+  if (!name) return "";
+  const msg = PERSONAL_MESSAGES[Math.floor(Math.random() * PERSONAL_MESSAGES.length)];
+  return msg.replace(/{name}/g, name);
+}
+
 // ===== RENDER PRODUCT CARD =====
 function renderProduct(product) {
   const style = getCategoryStyle(product.category);
   const svg = getBagSVG(style + product.id, product.color1, product.color2);
+  const userName = getUserName();
 
   const badgeHTML = product.badge
     ? `<div class="card-badge badge-${product.badge}">${product.badgeLabel}</div>`
+    : "";
+
+  const personalMsgHTML = userName
+    ? `<div class="card-personal-msg">${getPersonalMessage(userName)}</div>`
     : "";
 
   return `
@@ -313,7 +338,7 @@ function renderProduct(product) {
         <div class="card-img">
           ${
             product.image
-              ? `<img src="${product.image}" alt="${product.name}" style="width:100%;height:100%;object-fit:cover;"/>`
+              ? `<img src="${product.image}" alt="${product.name}" loading="lazy" style="width:100%;height:100%;object-fit:cover;"/>`
               : svg
           }
         </div>
@@ -331,6 +356,7 @@ function renderProduct(product) {
         <div class="card-category">${product.category}</div>
         <div class="card-name">${product.name}</div>
         <div class="card-desc">${product.description}</div>
+        ${personalMsgHTML}
         <div class="card-footer">
           <div class="card-price">${product.price}</div>
           <div class="card-rating">
@@ -342,82 +368,70 @@ function renderProduct(product) {
   `;
 }
 
-// ===== MOUNT PRODUCTS =====
-function mountProducts() {
-  // Initial render is handled by refreshAll() which respects pagination
-  refreshAll();
+// ===== CATEGORY CAROUSEL RENDERING =====
+function renderCategoryCarousel(category, products) {
+  const productsHTML = products.map(renderProduct).join("");
+  return `
+    <div class="category-group">
+      <div class="category-group-header">
+        <h3 class="category-group-title">${category}</h3>
+        <div class="carousel-nav">
+          <button class="carousel-arrow carousel-prev" aria-label="Previous">‹</button>
+          <button class="carousel-arrow carousel-next" aria-label="Next">›</button>
+        </div>
+      </div>
+      <div class="category-carousel-wrap">
+        <div class="category-carousel">
+          ${productsHTML}
+        </div>
+      </div>
+    </div>
+  `;
 }
 
-// ===== CATEGORY FILTERS =====
-let activeFeaturedCategory = "All";
-let activeTrendingCategory = "All";
-let currentSearchQuery = "";
-
-// ===== PAGINATION STATE =====
-const PRODUCTS_PER_PAGE = 4;
-let featuredVisibleCount = PRODUCTS_PER_PAGE;
-let trendingVisibleCount = PRODUCTS_PER_PAGE;
-
-function getCategories(products) {
-  const cats = [...new Set(products.map((p) => p.category))];
-  return ["All", ...cats];
-}
-
-function renderFilterButtons(containerId, categories, activeCategory, onClick) {
+function mountCategorizedProducts(containerId, products, searchQuery) {
   const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = categories
-    .map(
-      (cat) =>
-        `<button class="filter-btn${cat === activeCategory ? " active" : ""}" data-category="${cat}">${cat}</button>`,
-    )
+  if (!container) return 0;
+
+  // Filter by search if needed
+  let filtered = products;
+  if (searchQuery) {
+    filtered = products.filter(
+      (p) =>
+        p.name.toLowerCase().includes(searchQuery) ||
+        p.category.toLowerCase().includes(searchQuery) ||
+        p.description.toLowerCase().includes(searchQuery),
+    );
+  }
+
+  // Group by category
+  const groups = {};
+  filtered.forEach((p) => {
+    if (!groups[p.category]) groups[p.category] = [];
+    groups[p.category].push(p);
+  });
+
+  // Render each group
+  container.innerHTML = Object.entries(groups)
+    .map(([cat, prods]) => renderCategoryCarousel(cat, prods))
     .join("");
-  container.querySelectorAll(".filter-btn").forEach((btn) => {
-    btn.addEventListener("click", () => onClick(btn.dataset.category));
+
+  // Init carousel buttons
+  container.querySelectorAll(".category-group").forEach((group) => {
+    const carousel = group.querySelector(".category-carousel");
+    const prev = group.querySelector(".carousel-prev");
+    const next = group.querySelector(".carousel-next");
+    if (prev && next && carousel) {
+      prev.addEventListener("click", () => {
+        carousel.scrollBy({ left: -300, behavior: "smooth" });
+      });
+      next.addEventListener("click", () => {
+        carousel.scrollBy({ left: 300, behavior: "smooth" });
+      });
+    }
   });
-}
 
-function filterProducts(products, category, searchQuery) {
-  return products.filter((p) => {
-    const matchesCategory = category === "All" || p.category === category;
-    const matchesSearch =
-      !searchQuery ||
-      p.name.toLowerCase().includes(searchQuery) ||
-      p.category.toLowerCase().includes(searchQuery) ||
-      p.description.toLowerCase().includes(searchQuery);
-    return matchesCategory && matchesSearch;
-  });
-}
-
-function updateGrid(
-  gridId,
-  noResultsId,
-  showMoreId,
-  products,
-  category,
-  searchQuery,
-  visibleCount,
-) {
-  const grid = document.getElementById(gridId);
-  const noResults = document.getElementById(noResultsId);
-  const showMoreWrap = document.getElementById(showMoreId);
-  if (!grid) return { total: 0, shown: 0 };
-
-  const filtered = filterProducts(products, category, searchQuery);
-  const toShow = filtered.slice(0, visibleCount);
-  grid.innerHTML = toShow.map(renderProduct).join("");
-
-  if (noResults) {
-    noResults.style.display = filtered.length === 0 ? "block" : "none";
-  }
-
-  // Show/hide the "Show More" button
-  if (showMoreWrap) {
-    showMoreWrap.style.display =
-      visibleCount < filtered.length ? "flex" : "none";
-  }
-
-  // Re-init scroll reveal for new cards
+  // Scroll reveal
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry, i) => {
@@ -429,36 +443,30 @@ function updateGrid(
     },
     { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
   );
-  grid.querySelectorAll(".sr").forEach((el) => observer.observe(el));
+  container.querySelectorAll(".sr").forEach((el) => observer.observe(el));
 
-  return { total: filtered.length, shown: toShow.length };
+  return filtered.length;
 }
 
+// ===== SEARCH =====
+let currentSearchQuery = "";
+
 function refreshAll() {
-  const featuredResult = updateGrid(
-    "featuredGrid",
-    "featuredNoResults",
-    "featuredShowMore",
+  const featuredCount = mountCategorizedProducts(
+    "featuredCarousels",
     FEATURED_PRODUCTS,
-    activeFeaturedCategory,
     currentSearchQuery,
-    featuredVisibleCount,
   );
-  const trendingResult = updateGrid(
-    "trendingGrid",
-    "trendingNoResults",
-    "trendingShowMore",
+  const trendingCount = mountCategorizedProducts(
+    "trendingCarousels",
     TRENDING_PRODUCTS,
-    activeTrendingCategory,
     currentSearchQuery,
-    trendingVisibleCount,
   );
 
-  // Update search results info
   const info = document.getElementById("searchResultsInfo");
   if (info) {
     if (currentSearchQuery) {
-      const total = featuredResult.total + trendingResult.total;
+      const total = featuredCount + trendingCount;
       info.textContent = `${total} result${total !== 1 ? "s" : ""} found for "${currentSearchQuery}"`;
     } else {
       info.textContent = "";
@@ -466,49 +474,6 @@ function refreshAll() {
   }
 }
 
-function initFilters() {
-  const featuredCategories = getCategories(FEATURED_PRODUCTS);
-  const trendingCategories = getCategories(TRENDING_PRODUCTS);
-
-  function onFeaturedClick(cat) {
-    activeFeaturedCategory = cat;
-    featuredVisibleCount = PRODUCTS_PER_PAGE; // reset pagination on category change
-    renderFilterButtons(
-      "featuredFilters",
-      featuredCategories,
-      activeFeaturedCategory,
-      onFeaturedClick,
-    );
-    refreshAll();
-  }
-
-  function onTrendingClick(cat) {
-    activeTrendingCategory = cat;
-    trendingVisibleCount = PRODUCTS_PER_PAGE; // reset pagination on category change
-    renderFilterButtons(
-      "trendingFilters",
-      trendingCategories,
-      activeTrendingCategory,
-      onTrendingClick,
-    );
-    refreshAll();
-  }
-
-  renderFilterButtons(
-    "featuredFilters",
-    featuredCategories,
-    activeFeaturedCategory,
-    onFeaturedClick,
-  );
-  renderFilterButtons(
-    "trendingFilters",
-    trendingCategories,
-    activeTrendingCategory,
-    onTrendingClick,
-  );
-}
-
-// ===== SEARCH =====
 function initSearch() {
   const searchInput = document.getElementById("searchInput");
   const searchClear = document.getElementById("searchClear");
@@ -516,9 +481,6 @@ function initSearch() {
 
   searchInput.addEventListener("input", () => {
     currentSearchQuery = searchInput.value.trim().toLowerCase();
-    // Reset pagination when search changes
-    featuredVisibleCount = PRODUCTS_PER_PAGE;
-    trendingVisibleCount = PRODUCTS_PER_PAGE;
     if (searchClear) {
       searchClear.classList.toggle("visible", searchInput.value.length > 0);
     }
@@ -529,8 +491,6 @@ function initSearch() {
     searchClear.addEventListener("click", () => {
       searchInput.value = "";
       currentSearchQuery = "";
-      featuredVisibleCount = PRODUCTS_PER_PAGE;
-      trendingVisibleCount = PRODUCTS_PER_PAGE;
       searchClear.classList.remove("visible");
       refreshAll();
       searchInput.focus();
@@ -538,24 +498,157 @@ function initSearch() {
   }
 }
 
-// ===== SHOW MORE BUTTONS =====
-function initShowMore() {
-  const featuredBtn = document.getElementById("featuredShowMoreBtn");
-  const trendingBtn = document.getElementById("trendingShowMoreBtn");
+// ===== NAME MODAL =====
+function initNameModal() {
+  const overlay = document.getElementById("nameModal");
+  const form = document.getElementById("nameForm");
+  const input = document.getElementById("nameInput");
+  if (!overlay || !form || !input) return;
 
-  if (featuredBtn) {
-    featuredBtn.addEventListener("click", () => {
-      featuredVisibleCount += PRODUCTS_PER_PAGE;
-      refreshAll();
-    });
+  const existingName = getUserName();
+  if (existingName) {
+    // Already have name, update personalization
+    updatePersonalization(existingName);
+    return;
   }
 
-  if (trendingBtn) {
-    trendingBtn.addEventListener("click", () => {
-      trendingVisibleCount += PRODUCTS_PER_PAGE;
+  // Show modal with slight delay for page to render
+  setTimeout(() => {
+    overlay.classList.add("active");
+    input.focus();
+  }, 800);
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const name = input.value.trim();
+    if (!name) return;
+
+    localStorage.setItem("luxebag_username", name);
+
+    // Close animation
+    overlay.classList.add("closing");
+    setTimeout(() => {
+      overlay.classList.remove("active", "closing");
+      overlay.style.display = "none";
+      updatePersonalization(name);
+      // Refresh products to show personal messages
       refreshAll();
-    });
+    }, 500);
+  });
+}
+
+function updatePersonalization(name) {
+  // Desktop nav greeting
+  const greeting = document.getElementById("userGreeting");
+  if (greeting) {
+    greeting.textContent = `Hi, ${name} 👋`;
   }
+  // Mobile greeting
+  const mobileGreeting = document.getElementById("mobileUserGreeting");
+  if (mobileGreeting) {
+    mobileGreeting.textContent = `Hi, ${name} ✨`;
+  }
+}
+
+// ===== THEME TOGGLE =====
+function initTheme() {
+  const saved = localStorage.getItem("luxebag_theme") || "light";
+  document.documentElement.setAttribute("data-theme", saved);
+
+  const toggle = document.getElementById("themeToggle");
+  const mobileToggle = document.getElementById("mobileThemeToggle");
+
+  function switchTheme() {
+    const current = document.documentElement.getAttribute("data-theme");
+    const next = current === "dark" ? "light" : "dark";
+    document.documentElement.setAttribute("data-theme", next);
+    localStorage.setItem("luxebag_theme", next);
+  }
+
+  if (toggle) toggle.addEventListener("click", switchTheme);
+  if (mobileToggle) mobileToggle.addEventListener("click", switchTheme);
+}
+
+// ===== LOADING STATES =====
+function getLoaderMessages(name) {
+  if (name) {
+    return [
+      `Loading bags for ${name}...`,
+      `Curating the perfect picks for ${name}...`,
+      `Bringing luxury to ${name}'s doorstep...`,
+      `Finding ${name}'s next favorite bag...`,
+    ];
+  }
+  return [
+    "Curating the best picks for you...",
+    "Loading luxury bags...",
+    "Bringing the best bags to you...",
+  ];
+}
+
+function showLoadersWithDelay(callback) {
+  const name = getUserName();
+  const messages = getLoaderMessages(name);
+
+  // Set personalized loader text
+  const featuredText = document.getElementById("featuredLoaderText");
+  const trendingText = document.getElementById("trendingLoaderText");
+  if (featuredText) featuredText.textContent = messages[Math.floor(Math.random() * messages.length)];
+  if (trendingText) trendingText.textContent = messages[Math.floor(Math.random() * messages.length)];
+
+  // Preload images then show products
+  const allProducts = [...FEATURED_PRODUCTS, ...TRENDING_PRODUCTS];
+  const imageUrls = allProducts.filter((p) => p.image).map((p) => p.image);
+
+  let loaded = 0;
+  const minDelay = 1200; // Minimum show time for loader
+  const startTime = Date.now();
+
+  function checkDone() {
+    loaded++;
+    if (loaded >= imageUrls.length) {
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, minDelay - elapsed);
+      setTimeout(() => {
+        // Hide loaders
+        const fl = document.getElementById("featuredLoader");
+        const tl = document.getElementById("trendingLoader");
+        if (fl) fl.classList.add("hidden");
+        if (tl) tl.classList.add("hidden");
+
+        // Show carousels
+        const fc = document.getElementById("featuredCarousels");
+        const tc = document.getElementById("trendingCarousels");
+        if (fc) fc.style.display = "block";
+        if (tc) tc.style.display = "block";
+
+        // Mount products
+        callback();
+      }, remaining);
+    }
+  }
+
+  if (imageUrls.length === 0) {
+    setTimeout(() => {
+      const fl = document.getElementById("featuredLoader");
+      const tl = document.getElementById("trendingLoader");
+      if (fl) fl.classList.add("hidden");
+      if (tl) tl.classList.add("hidden");
+      const fc = document.getElementById("featuredCarousels");
+      const tc = document.getElementById("trendingCarousels");
+      if (fc) fc.style.display = "block";
+      if (tc) tc.style.display = "block";
+      callback();
+    }, minDelay);
+    return;
+  }
+
+  imageUrls.forEach((url) => {
+    const img = new Image();
+    img.onload = checkDone;
+    img.onerror = checkDone;
+    img.src = url;
+  });
 }
 
 // ===== CUSTOM CURSOR =====
@@ -564,13 +657,9 @@ function initCursor() {
   const dot = document.getElementById("cursorDot");
   if (!cursor || !dot) return;
 
-  let cx = 0,
-    cy = 0;
   document.addEventListener("mousemove", (e) => {
     dot.style.left = e.clientX + "px";
     dot.style.top = e.clientY + "px";
-    cx += (e.clientX - cx) * 0.12;
-    cy += (e.clientY - cy) * 0.12;
     cursor.style.left = e.clientX + "px";
     cursor.style.top = e.clientY + "px";
   });
@@ -600,7 +689,6 @@ function initScrollReveal() {
     },
     { threshold: 0.1, rootMargin: "0px 0px -40px 0px" },
   );
-
   document.querySelectorAll(".sr").forEach((el) => observer.observe(el));
 }
 
@@ -618,7 +706,7 @@ const mobileMenu = document.getElementById("mobileMenu");
 
 function closeMobileMenu() {
   mobileMenu.classList.remove("open");
-  navToggle.querySelectorAll("span").forEach((s, i) => {
+  navToggle.querySelectorAll("span").forEach((s) => {
     s.style.transform = "";
     s.style.opacity = "";
   });
@@ -640,12 +728,18 @@ if (navToggle && mobileMenu) {
 
 // ===== INIT =====
 document.addEventListener("DOMContentLoaded", () => {
-  mountProducts();
-  initFilters();
-  initSearch();
-  initShowMore();
-  initCursor();
-  initNav();
-  // Scroll reveal runs after products are mounted
-  setTimeout(initScrollReveal, 100);
+  // Theme first (instant, no flash)
+  initTheme();
+
+  // Name modal (shows if no name saved)
+  initNameModal();
+
+  // Show loaders, preload images, then mount products
+  showLoadersWithDelay(() => {
+    refreshAll();
+    initSearch();
+    initCursor();
+    initNav();
+    setTimeout(initScrollReveal, 100);
+  });
 });
