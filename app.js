@@ -20,6 +20,22 @@ const FEATURED_PRODUCTS = [
     color2: "#5c3d20",
   },
   {
+    id: 8,
+    name: "Michael Kors Tote Bas",
+    category: "Tote Bag",
+    image: "images/featured_products/tote2.jpg",
+    description: "Michael Kors Women's Quinn Medium Tote",
+    price: "$198.00",
+    rating: "4.8",
+    reviews: "151",
+    badge: "hot",
+    badgeLabel: "🔥 Viral Pick",
+    amazonUrl:
+      "https://www.amazon.com/Michael-Kors-Gold-Tone-Hardware-Vanilla/dp/B0F22W6M56?crid=3UYTMCNZM9ZTW&dib=eyJ2IjoiMSJ9.lqCdOC9qD9XYnNgpfi3ecICCKbluiyb-_b66sbSFF8zkp8LEAh9z5dcr2VsI6_DV7MzbLzKeb2MFmgoxpqoeSzn5LKh9MDhtzvigZ-k-CoA6OqlvhuU0U5iv8wXqtXgqpqkoqx3EUmz9kylB7twC1nU-Lq3Y3h9OOMJk0-KFiRxGbNFiqOAB3Jp0MDqz6Z7Zlbgpj31siiqdR6eQmmupTw1XyaWpZO-xZPvNPN2J0neqEgEiq06VhIwUnM4-_YMMCzEQbXY9PKtNm67CDhCk2btujc1X-us9mLBlADUO3Bk.9jySRt2hHTBt1iWKQfxXyaj8GSsGLz6twDPj2k3easE&dib_tag=se&keywords=designer%2Btote%2Bbag&qid=1773339975&sprefix=designer%2Btote%2Bb%2Caps%2C711&sr=8-11&th=1&psc=1&linkCode=ll2&tag=maxine_fashion-20&linkId=63db2be60dfa168b938147283c7dfc6a&language=en_US&ref_=as_li_ss_tl",
+    color1: "#3d2b1a",
+    color2: "#5c3d20",
+  },
+  {
     id: 2,
     name: "BOSTANTEN Small Crossbody Bag",
     category: "Crossbody Bag",
@@ -98,6 +114,22 @@ const FEATURED_PRODUCTS = [
     badgeLabel: null,
     amazonUrl:
       "https://www.amazon.com/Weekender-Overnight-Compartment-Oversized-Business/dp/B0B8HF3BQ9?content-id=amzn1.sym.142b989c-8a34-4cd3-bbcd-eff9a40d5095%3Aamzn1.sym.142b989c-8a34-4cd3-bbcd-eff9a40d5095&crid=9Y8DZ7FCDJI0&cv_ct_cx=travel%2Bbags%2Bfor%2Bwomen&keywords=travel%2Bbags%2Bfor%2Bwomen&pd_rd_i=B0B8HF3BQ9&pd_rd_r=2cd6c2e2-974d-4ffa-8efb-bb61059fb492&pd_rd_w=mikxK&pd_rd_wg=NI1mc&pf_rd_p=142b989c-8a34-4cd3-bbcd-eff9a40d5095&pf_rd_r=VBHZHJ26443ZFR347NVB&qid=1772446711&sbo=RZvfv%2F%2FHxDF%2BO5021pAnSA%3D%3D&sprefix=travel%2Bbags%2Bfor%2Bwomen%2Caps%2C2841&sr=1-1-5fce89f9-8fc5-4b48-8d54-c61c70c1ff46-spons&aref=KgFfkH8f6T&sp_csd=d2lkZ2V0TmFtZT1zcF9zZWFyY2hfdGhlbWF0aWM&th=1&linkCode=ll2&tag=maxine_fashion-20&linkId=d79934c72538a6fe4590195b4223a6b8&language=en_US&ref_=as_li_ss_tl",
+    color1: "#1a1a2a",
+    color2: "#20203d",
+  },
+  {
+    id: 7,
+    name: "Womaens Backpack Anti-Theft",
+    category: "Fashion Backpack",
+    image: "images/featured_products/backpack2.jpg",
+    description: `Womens Backpack Purse Anti-theft Fashion Waterproof Lightweight Small Backpack for Women Ladies Travel Nylon 2616-Grey`,
+    price: "$31.99",
+    rating: "4.7",
+    reviews: "3",
+    badge: "hot",
+    badgeLabel: "🔥 Trending",
+    amazonUrl:
+      "https://www.amazon.com/GELANNI-Anti-theft-Waterproof-Lightweight-2616-Grey/dp/B0DN6RWBD5?pd_rd_w=ebLZx&content-id=amzn1.sym.aa738fbd-ad05-4d11-aae2-04b598db6305&pf_rd_p=aa738fbd-ad05-4d11-aae2-04b598db6305&pf_rd_r=790DG51W0V3YP7RWZHT1&pd_rd_wg=kddBQ&pd_rd_r=67a0170f-63af-4f29-86ce-4ef9ff230532&pd_rd_i=B0DN6RWBD5&th=1&linkCode=ll2&tag=maxine_fashion-20&linkId=ea84c26dfa4995c8ea19f41a8574a338&language=en_US&ref_=as_li_ss_tl",
     color1: "#1a1a2a",
     color2: "#20203d",
   },
@@ -313,7 +345,8 @@ function getUserName() {
 
 function getPersonalMessage(name) {
   if (!name) return "";
-  const msg = PERSONAL_MESSAGES[Math.floor(Math.random() * PERSONAL_MESSAGES.length)];
+  const msg =
+    PERSONAL_MESSAGES[Math.floor(Math.random() * PERSONAL_MESSAGES.length)];
   return msg.replace(/{name}/g, name);
 }
 
@@ -593,8 +626,12 @@ function showLoadersWithDelay(callback) {
   // Set personalized loader text
   const featuredText = document.getElementById("featuredLoaderText");
   const trendingText = document.getElementById("trendingLoaderText");
-  if (featuredText) featuredText.textContent = messages[Math.floor(Math.random() * messages.length)];
-  if (trendingText) trendingText.textContent = messages[Math.floor(Math.random() * messages.length)];
+  if (featuredText)
+    featuredText.textContent =
+      messages[Math.floor(Math.random() * messages.length)];
+  if (trendingText)
+    trendingText.textContent =
+      messages[Math.floor(Math.random() * messages.length)];
 
   // Preload images then show products
   const allProducts = [...FEATURED_PRODUCTS, ...TRENDING_PRODUCTS];
