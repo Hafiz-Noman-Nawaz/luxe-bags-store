@@ -10,6 +10,7 @@ const FEATURED_PRODUCTS = [
     description:
       "Synthetic Leather Handbags Tote Bag Shoulder Bag Top Handle Satchel Purse Set 4pcs",
     price: "$34.99",
+    scratchPrice: "$39.19",
     rating: "4.4",
     reviews: "13.6k",
     badge: "hot",
@@ -26,6 +27,7 @@ const FEATURED_PRODUCTS = [
     image: "images/featured_products/tote2.jpg",
     description: "Michael Kors Women's Quinn Medium Tote",
     price: "$198.00",
+    scratchPrice: "$219.78",
     rating: "4.8",
     reviews: "151",
     badge: "hot",
@@ -43,12 +45,31 @@ const FEATURED_PRODUCTS = [
     description:
       "Elevate your daily rotation with the Hana Medium Tote. Crafted from high-grade sustainable vegan leather, this minimalist masterpiece features a structured silhouette that transitions effortlessly from morning meetings to evening drinks. With enough room for your tablet, notebook, and essentials, it’s the ultimate blend of modern ethics and timeless sophistication.",
     price: "$139.00",
+    scratchPrice: "$157.07",
     rating: "4.2",
     reviews: "680",
-    badge: "hot",
+    badge: "new",
     badgeLabel: "✨ Overall Pick",
     amazonUrl:
       "https://www.amazon.com/JW-PEI-Womens-Hana-Medium/dp/B0D7H14S58?crid=GYCM3W454MN0&dib=eyJ2IjoiMSJ9.vWl8Wz5nCjJRBg0kWTJMoe6sPoXWm9EaRFDrmdXiBqaeH6He3eeKKeeLR_P58U0dCea49QGC58kYygLYngOuWS_1AQYDkmfp--YLcjrC19ZfjEqewFAAR_oQiRwLcUVkKDdzwNYifTUgWPPzmHbe-ApTI3Qu_Mox3GeRgDD_vOa0m7Wu9tdQn--KyE-OCApdqBumxFWsYhRXvcz2bm3ja9JuEP2T4gGNb_aRXH2bJz6gLywYCbwOwffgFJ6mfzEnyynCxDB62F6HuzDbXvvYLlk5fCamR6wfwN3wS4Pp9dw.uekzvk8nKzgJgIzArKnkH2lCYG9Jvqknw8P5BH1HcJo&dib_tag=se&keywords=designer%2Btote%2Bbags%2Bwomen&qid=1773344229&sprefix=designer%2Btote%2Bbag%2Caps%2C528&sr=8-19&th=1&linkCode=ll2&tag=maxine_fashion-20&linkId=078fb89885811988cdd9f6f11c05c6e4&language=en_US&ref_=as_li_ss_tl",
+    color1: "#3d2b1a",
+    color2: "#5c3d20",
+  },
+  {
+    id: 10,
+    name: "Tota Bags 2pcs with Small Wallet ",
+    category: "Tote Bag",
+    image: "images/featured_products/tote4.jpg",
+    description:
+      "Handbags for Women Designer Fashion Purses Top Handle Satchel Shoulder Bags 2pcs with Small Wallet, Elevate your daily rotation with the Hana Medium Tote. Crafted from high-grade sustainable vegan leather.",
+    price: "$35.99",
+    scratchPrice: "$40.31",
+    rating: "4.5",
+    reviews: "519",
+    badge: "hot",
+    badgeLabel: "✨ Overall Pick",
+    amazonUrl:
+      "https://www.amazon.com/Handbags-Lacel-Urwebin-Designer-Shoulder/dp/B09TQS8YND?crid=GYCM3W454MN0&dib=eyJ2IjoiMSJ9.vWl8Wz5nCjJRBg0kWTJMoe6sPoXWm9EaRFDrmdXiBqaj031y4LTsODVj5_WDyji7lKcDIm19vfAKoYH2P4CPxKrWHwsHeCm4JFq-_9QHoL1jZXQOrrYWnw3j4R6Cko6uLeE6cu6HgQyQR5KkZMNqVUJUxGAwthgIfBsT3esFBRcZku_rm5denxDFHwdf5MbVJ1lQ9Q56TDkgLWKA2Vh6rSivSYIdpSyPWDJgvnpqEwbioboAIXWP9NNlMgIc7dd8aJYgeJzIKBAv2T--QVkVtn37vDEVLbTz_hrXsC2If_0.cgVF0pbg_U3s4lgHvHhJSxyFueeIMSXduMiaxLRBC58&dib_tag=se&keywords=designer+tote+bags+women&qid=1773345177&sprefix=designer+tote+bag%2Caps%2C528&sr=8-7&linkCode=ll2&tag=maxine_fashion-20&linkId=541c42980ab4452d365cd2a131010222&language=en_US&ref_=as_li_ss_tl",
     color1: "#3d2b1a",
     color2: "#5c3d20",
   },
@@ -59,6 +80,7 @@ const FEATURED_PRODUCTS = [
     image: "images/featured_products/crossbody1.png",
     description: `BOSTANTEN Small Sling Bag Crossbody Bags for Women Trendy Crossbody Purse Leather Chest Bag`,
     price: "$22.99",
+    scratchPrice: "$26.21",
     rating: "4.6",
     reviews: "2.4k",
     badge: "new",
@@ -76,6 +98,7 @@ const FEATURED_PRODUCTS = [
     description:
       "TINDTOP Clutch Purses for Women Evening Handbags for Formal Wedding Party Cocktail Prom Crossbody Shoulder Envelope Bag.",
     price: "$15.99",
+    scratchPrice: "$17.75",
     rating: "4.5",
     reviews: "525",
     badge: null,
@@ -92,6 +115,7 @@ const FEATURED_PRODUCTS = [
     image: "images/featured_products/bucket1.jpg",
     description: "KARL LAGERFELD Paris Women's Adele Bucket Bag.",
     price: "$99.00",
+    scratchPrice: "$111.87",
     rating: "4.6",
     reviews: "139",
     badge: "sale",
@@ -109,6 +133,7 @@ const FEATURED_PRODUCTS = [
     description:
       "Purses and Handbags for Women Shoulder Tote Bags Top Handle Satchel, 3 card slots. Luxury in your palm.",
     price: "$30.99",
+    scratchPrice: "$34.71",
     rating: "4.4",
     reviews: "12k",
     badge: "hot",
@@ -125,6 +150,7 @@ const FEATURED_PRODUCTS = [
     image: "images/featured_products/travel1.jpg",
     description: `Travel Weekender Bag for Women, 21" Overnight Bag with Shoe Compartment 50L Large Travel Duffel Bag Carry On Tote for Weekend, Overnight, Business Trips, Water Resistant`,
     price: "$38.99",
+    scratchPrice: "$42.89",
     rating: "4.5",
     reviews: "3.3k",
     badge: null,
@@ -141,6 +167,7 @@ const FEATURED_PRODUCTS = [
     image: "images/featured_products/backpack2.jpg",
     description: `Womens Backpack Purse Anti-theft Fashion Waterproof Lightweight Small Backpack for Women Ladies Travel Nylon 2616-Grey`,
     price: "$31.99",
+    scratchPrice: "$36.15",
     rating: "4.7",
     reviews: "3",
     badge: "hot",
@@ -149,6 +176,60 @@ const FEATURED_PRODUCTS = [
       "https://www.amazon.com/GELANNI-Anti-theft-Waterproof-Lightweight-2616-Grey/dp/B0DN6RWBD5?pd_rd_w=ebLZx&content-id=amzn1.sym.aa738fbd-ad05-4d11-aae2-04b598db6305&pf_rd_p=aa738fbd-ad05-4d11-aae2-04b598db6305&pf_rd_r=790DG51W0V3YP7RWZHT1&pd_rd_wg=kddBQ&pd_rd_r=67a0170f-63af-4f29-86ce-4ef9ff230532&pd_rd_i=B0DN6RWBD5&th=1&linkCode=ll2&tag=maxine_fashion-20&linkId=ea84c26dfa4995c8ea19f41a8574a338&language=en_US&ref_=as_li_ss_tl",
     color1: "#1a1a2a",
     color2: "#20203d",
+  },
+  {
+    id: 11,
+    name: "CHARMING TAILOR Clutch",
+    category: "Clutch Purse",
+    image: "images/featured_products/clutch2.jpg",
+    description:
+      "CHARMING TAILOR Clutch Evening Bag Elegant Pleated Satin Formal Handbag Simple Classy Purse for Women",
+    price: "$29.43",
+    scratchPrice: "$32.96",
+    rating: "4.5",
+    reviews: "3086",
+    badge: "hot",
+    badgeLabel: "Best Seller",
+    amazonUrl:
+      "https://www.amazon.com/Charming-Tailor-Evening-Elegant-Pleated/dp/B07DZ5JR77?pd_rd_w=uQ6Si&content-id=amzn1.sym.209da27f-dbb0-4e5e-b748-6c14578a661e&pf_rd_p=209da27f-dbb0-4e5e-b748-6c14578a661e&pf_rd_r=DS7AV0CJE99KJ21VM5MK&pd_rd_wg=cl7cu&pd_rd_r=e3a6583a-8c09-4900-897a-57be2f17f1f4&pd_rd_i=B07DZ5JR77&th=1&linkCode=ll2&tag=maxine_fashion-20&linkId=6cf4bafc945b721dc89669fff58610a2&language=en_US&ref_=as_li_ss_tl",
+    color1: "#2a1a3d",
+    color2: "#3d205c",
+  },
+  {
+    id: 12,
+    name: "Dasein Clutch Purses",
+    category: "Clutch Purse",
+    image: "images/featured_products/clutch3.jpg",
+    description:
+      "Dasein Clutch Purses for Women Evening Bags Formal Clutches with Rhinestones for Wedding Party Prom Dressy Purse",
+    price: "$19.99",
+    scratchPrice: "$22.19",
+    rating: "4.6",
+    reviews: "1877",
+    badge: "sale",
+    badgeLabel: "Best Value",
+    amazonUrl:
+      "https://www.amazon.com/Dasein-Pleated-Rhinestone-Accented-Evening/dp/B0711LMY9Q?pd_rd_w=SOVzw&content-id=amzn1.sym.209da27f-dbb0-4e5e-b748-6c14578a661e&pf_rd_p=209da27f-dbb0-4e5e-b748-6c14578a661e&pf_rd_r=474RSS36M502WXWM2AMV&pd_rd_wg=6XJYO&pd_rd_r=00164a1a-ce20-400c-bda4-fe9310115282&pd_rd_i=B0711LMY9Q&th=1&linkCode=ll2&tag=maxine_fashion-20&linkId=71af0a675ce7479048a7bf07d8927bfe&language=en_US&ref_=as_li_ss_tl",
+    color1: "#2a1a3d",
+    color2: "#3d205c",
+  },
+  {
+    id: 13,
+    name: "Dasein Party Clutch Purses",
+    category: "Clutch Purse",
+    image: "images/featured_products/clutch4.jpg",
+    description:
+      "Dasein Women's Evening Bag Party Clutches Wedding Purses Cocktail Prom Handbags with Frosted Glittering",
+    price: "$14.61",
+    scratchPrice: "$16.66",
+    rating: "4.3",
+    reviews: "3339",
+    badge: "hot",
+    badgeLabel: "✨ Limited Time Deal",
+    amazonUrl:
+      "https://www.amazon.com/Dasein-Clutches-Cocktail-Handbags-Glittering/dp/B076HLQRX7?pd_rd_w=anhJf&content-id=amzn1.sym.209da27f-dbb0-4e5e-b748-6c14578a661e&pf_rd_p=209da27f-dbb0-4e5e-b748-6c14578a661e&pf_rd_r=BRWQMYV51MSKJB3GQDT3&pd_rd_wg=rmhGA&pd_rd_r=1fd3167b-251a-4c2c-b774-4e4714c36387&pd_rd_i=B076HLQRX7&th=1&linkCode=ll2&tag=maxine_fashion-20&linkId=c176b8cfbd8c7cc8c9d7227d443dc5f2&language=en_US&ref_=as_li_ss_tl",
+    color1: "#2a1a3d",
+    color2: "#3d205c",
   },
 ];
 
@@ -161,6 +242,7 @@ const TRENDING_PRODUCTS = [
     description:
       "Angel Kiss Handbags for Womens Top-Handle Hobo Purse Roomy Casual Shoulder Bags PU Tote Satchel Purse for Women",
     price: "$33.99",
+    scratchPrice: "$37.73",
     rating: "4.4",
     reviews: "3.5k",
     badge: "hot",
@@ -178,6 +260,7 @@ const TRENDING_PRODUCTS = [
     description:
       "LOVEVOOK Purses and Handbags for Women, Tote Shoulder Bag Satchel Black Purse and PU Leather Top Handle for ladies",
     price: "$28.99",
+    scratchPrice: "$32.76",
     rating: "4.6",
     reviews: "1.5k",
     badge: "new",
@@ -194,6 +277,7 @@ const TRENDING_PRODUCTS = [
     image: "images/trending_products/wristlet1.jpg",
     description: `Michael Kors Women's Jet Set Double Zip Wristlet`,
     price: "$129.50",
+    scratchPrice: "$145.04",
     rating: "4.7",
     reviews: "2.6k",
     badge: null,
@@ -211,6 +295,7 @@ const TRENDING_PRODUCTS = [
     description:
       "PINCNEL Women Backpack Purse Waterproof Nylon Anti-theft Rucksack Lightweight Shoulder Bag",
     price: "$26.99",
+    scratchPrice: "$29.69",
     rating: "4.6",
     reviews: "19.8k",
     badge: "sale",
@@ -408,7 +493,10 @@ function renderProduct(product) {
         <div class="card-desc">${product.description}</div>
         ${personalMsgHTML}
         <div class="card-footer">
-          <div class="card-price">${product.price}</div>
+          <div class="card-price-wrap">
+            ${product.scratchPrice ? `<div class="card-scratch-price">${product.scratchPrice}</div>` : ""}
+            <div class="card-price">${product.price}</div>
+          </div>
           <div class="card-rating">
             ★ ${product.rating} <span>(${product.reviews})</span>
           </div>
