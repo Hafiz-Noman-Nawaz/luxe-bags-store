@@ -36,6 +36,23 @@ const FEATURED_PRODUCTS = [
     color2: "#5c3d20",
   },
   {
+    id: 9,
+    name: "JW PEI Hana Medium Tote | Sleek Vegan Leather Everyday Bag",
+    category: "Tote Bag",
+    image: "images/featured_products/tote3.jpg",
+    description:
+      "Elevate your daily rotation with the Hana Medium Tote. Crafted from high-grade sustainable vegan leather, this minimalist masterpiece features a structured silhouette that transitions effortlessly from morning meetings to evening drinks. With enough room for your tablet, notebook, and essentials, it’s the ultimate blend of modern ethics and timeless sophistication.",
+    price: "$139.00",
+    rating: "4.2",
+    reviews: "680",
+    badge: "hot",
+    badgeLabel: "✨ Overall Pick",
+    amazonUrl:
+      "https://www.amazon.com/JW-PEI-Womens-Hana-Medium/dp/B0D7H14S58?crid=GYCM3W454MN0&dib=eyJ2IjoiMSJ9.vWl8Wz5nCjJRBg0kWTJMoe6sPoXWm9EaRFDrmdXiBqaeH6He3eeKKeeLR_P58U0dCea49QGC58kYygLYngOuWS_1AQYDkmfp--YLcjrC19ZfjEqewFAAR_oQiRwLcUVkKDdzwNYifTUgWPPzmHbe-ApTI3Qu_Mox3GeRgDD_vOa0m7Wu9tdQn--KyE-OCApdqBumxFWsYhRXvcz2bm3ja9JuEP2T4gGNb_aRXH2bJz6gLywYCbwOwffgFJ6mfzEnyynCxDB62F6HuzDbXvvYLlk5fCamR6wfwN3wS4Pp9dw.uekzvk8nKzgJgIzArKnkH2lCYG9Jvqknw8P5BH1HcJo&dib_tag=se&keywords=designer%2Btote%2Bbags%2Bwomen&qid=1773344229&sprefix=designer%2Btote%2Bbag%2Caps%2C528&sr=8-19&th=1&linkCode=ll2&tag=maxine_fashion-20&linkId=078fb89885811988cdd9f6f11c05c6e4&language=en_US&ref_=as_li_ss_tl",
+    color1: "#3d2b1a",
+    color2: "#5c3d20",
+  },
+  {
     id: 2,
     name: "BOSTANTEN Small Crossbody Bag",
     category: "Crossbody Bag",
@@ -455,11 +472,17 @@ function mountCategorizedProducts(containerId, products, searchQuery) {
     const prev = group.querySelector(".carousel-prev");
     const next = group.querySelector(".carousel-next");
     if (prev && next && carousel) {
+      const getScrollAmount = () => {
+        const firstCard = carousel.querySelector(".product-card");
+        const gap = parseFloat(getComputedStyle(carousel).gap || "0");
+        return firstCard ? firstCard.getBoundingClientRect().width + gap : 300;
+      };
+
       prev.addEventListener("click", () => {
-        carousel.scrollBy({ left: -300, behavior: "smooth" });
+        carousel.scrollBy({ left: -getScrollAmount(), behavior: "smooth" });
       });
       next.addEventListener("click", () => {
-        carousel.scrollBy({ left: 300, behavior: "smooth" });
+        carousel.scrollBy({ left: getScrollAmount(), behavior: "smooth" });
       });
     }
   });
